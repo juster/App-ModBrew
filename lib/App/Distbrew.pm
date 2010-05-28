@@ -51,7 +51,7 @@ sub print_help
     my ($command) = @_;
     my $package   = ( $command ? _cmd_class( $command ) : __PACKAGE__ );
     my $podpath   = Pod::Find::pod_where( { -inc => 1 }, $package )
-        or die qq{ERROR Failed to find docs for the "$command" command};
+        or die qq{ERROR: Failed to find docs for the "$command" command};
 
     # Copied from Pod::Usage manpage...
     require Pod::Find;
