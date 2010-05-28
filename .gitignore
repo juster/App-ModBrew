@@ -1,0 +1,10 @@
+#*#
+*~
+META.yml
+Makefile
+Makefile.old
+MYMETA.yml
+_build/*
+blib/*
+*.tmp
+*.bak
