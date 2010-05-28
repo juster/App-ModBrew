@@ -20,8 +20,9 @@ sub new
     print_help() unless @args;
 
     my $cmd_arg   = lc shift @args;
+    $cmd_arg      =~ s/\Arm\z/remove/;
     my ($command) = grep { $_ eq $cmd_arg }
-        qw/ install add rem list check help /;
+        qw/ install add remove list check help /;
 
     die qq{ERROR: Unknown command "$cmd_arg".  See the "help" command.\n}
         unless $command;
@@ -31,8 +32,7 @@ sub new
 
     my $cmdclass = _cmd_class( $command );
     eval { require $cmdclass }
-        or die q{ERROR: Failed to load distbrew command class } .
-              qq{"$cmdclass"\n$@};
+        or die qq{ERROR: Failed to load class for "$command" command\n$@};
     return $cmdclass->new( @args );
 }
 
@@ -72,7 +72,7 @@ distbrew [command] [command-args]
   Commands:
     install     Installs distbrew into ~/perl5/distbrew.
     add         Links a project directory to your ~/perl5.
-    rem[ove]    Removes a project's links from your ~/perl5.
+    rm/remove   Removes a project's links from your ~/perl5.
     list        List which project directories are linked into ~/perl5.
     check       Rebuild your projects and update your links if you need.
     help [cmd]  Display this help or help on a specific command.
