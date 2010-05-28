@@ -4,9 +4,6 @@ use warnings;
 use strict;
 our $VERSION = '0.01';
 
-use Pod::Usage qw(pod2usage);
-use Pod::Find;
-
 my @_OPTS_SPEC;
 
 # We act as both a factory and a base-class.
@@ -52,10 +49,11 @@ sub print_help
     my $package   = ( $command ? _cmd_class( $command ) : __PACKAGE__ );
 
     # Copied from Pod::Usage manpage...
+    require Pod::Usage;
     require Pod::Find;
     my $podpath = Pod::Find::pod_where( { -inc => 1 }, $package )
         or die qq{ERROR: Failed to find docs for the "$command" command};
-    pod2usage( -input => $podpath );
+    Pod::Usage::pod2usage( -input => $podpath );
     exit 0;
 }
 
