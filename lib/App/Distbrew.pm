@@ -2,6 +2,7 @@ package App::Distbrew;
 
 use warnings;
 use strict;
+our $VERSION = '0.01';
 
 use Pod::Usage qw(pod2usage);
 use Pod::Find;
