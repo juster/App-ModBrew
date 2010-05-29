@@ -1,8 +1,12 @@
-package App::Distbrew;
+package App::ModBrew;
+
+use File::Find qw();
 
 use warnings;
 use strict;
 our $VERSION = '0.01';
+
+my $DEFAULT_MODBREW_PREFIX = '~/perl5/modbrew';
 
 my @_OPTS_SPEC;
 
@@ -13,8 +17,9 @@ sub new
     my @args  = @_;
 
     # Perform like a base class...
-    return bless { args => [ @args ] }, $class
-        unless $class eq __PACKAGE__;
+    return bless { args   => [ @args ],
+                   prefix => $ENV{MODBREW_PREFIX} || $DEFAULT_MODBREW_PREFIX,
+                  }, $class unless $class eq __PACKAGE__;
 
     # Perform as a factory, create the proper sub-class...
     print_help() unless @args;
@@ -57,30 +62,93 @@ sub print_help
     exit 0;
 }
 
+#---HELPER METHOD---
+sub _map_linkables
+{
+    my ($self, $search_dir, $dest_prefix) = @_;
+
+    my %link_dest_of;
+
+    my $add_link = sub {
+        my ($src_abs) = @_;
+        my $dest =~ s/\A$search_dir//;
+        my $dest = File::Spec->catpath( $dest_prefix, $dest );
+        $link_dest_of{ $src_abs } = $dest;
+    };
+
+    my $finder = sub {
+        return unless ( /[.]pm\z/ || -x $_ );
+        $add_link->( $File::Find::name );
+    };
+
+    return %link_dest_of;
+}
+
+#---HELPER METHOD---
+sub _load_source_list
+{
+    my ($self) = @_;
+
+    my $listpath = File::Spec->catfile( $self->{'prefix'},
+                                        qw/ etc sources / );
+    return qw// unless -f $listpath;
+    open my $listfile, '<', $listpath or die "open $listpath failed: $!";
+
+    my @source_list = grep { length } map { chomp } <$listfile>;
+    close $listfile;
+
+    return @sources_list;
+}
+
+#---HELPER METHOD---
+sub _save_source_list
+{
+    my ($self, @sources) = @_;
+
+    my $listpath = File::Spec->catfile( $self->{'prefix'},
+                                        qw/ etc sources / );
+    open my $listfile, '>', $listpath or die "open $listpath failed: $!";
+    print $listfile "$_\n" for @sources;
+    close $listfile;
+
+    return;
+}
+
 1;
 
 __END__
 
 =head1 NAME
 
-distbrew - Link your projects into your local perl libraries.
+modbrew - Turn on or off locally installed perl modules.
 
 =head1 SYNOPSIS
 
-distbrew [command] [command-args]
+modbrew [command] [command-args]
 
   Commands:
-    install     Installs distbrew into ~/perl5/distbrew.
-    add         Links a project directory to your ~/perl5.
-    rm/remove   Removes a project's links from your ~/perl5.
-    list        List which project directories are linked into ~/perl5.
-    check       Rebuild your projects and update your links if you need.
+    install     Installs modbrew (default: ~/perl5/modbrew).
+    update      Try to update ourselves (requires git).
+    add         Add a directory to link into your modbrew dir.
+    rm/remove   Removes a directory's links from your modbrew dir.
+    list        List which directories are linked into ~/perl5/modbrew.
+    check       Checks our links.
     help [cmd]  Display this help or help on a specific command.
 
 =head1 DESCRIPTION
 
 This script adds symbolic links from your own perl projects to your
 locally installed perl modules under ~/perl5.
+
+=head1 SEE ALSO
+
+=over 4
+
+=item * L<App::perlbrew>
+
+=item * homebrew
+
+=back
 
 =head1 AUTHOR
 
