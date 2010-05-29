@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 use warnings;
 use strict;
-use App::Distbrew;
+use App::ModBrew;
 
 return 1 if caller;
-exit App::Distbrew->new( @ARGV )->run();
+exit App::ModBrew->new( @ARGV )->run();

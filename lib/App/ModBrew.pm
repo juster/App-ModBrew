@@ -72,7 +72,7 @@ sub _map_linkables
     my $add_link = sub {
         my ($src_abs) = @_;
         my $dest =~ s/\A$search_dir//;
-        my $dest = File::Spec->catpath( $dest_prefix, $dest );
+        $dest = File::Spec->catpath( $dest_prefix, $dest );
         $link_dest_of{ $src_abs } = $dest;
     };
 
@@ -97,7 +97,7 @@ sub _load_source_list
     my @source_list = grep { length } map { chomp } <$listfile>;
     close $listfile;
 
-    return @sources_list;
+    return @source_list;
 }
 
 #---HELPER METHOD---
