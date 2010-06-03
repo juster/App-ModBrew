@@ -9,14 +9,6 @@ use File::Copy   qw(copy);
 
 our @ISA = qw(App::ModBrew);
 
-sub new
-{
-    my $class = shift;
-
-    my $self = $class->SUPER::new( @_ );
-    return $self;
-}
-
 sub run
 {
     my ($self) = @_;
