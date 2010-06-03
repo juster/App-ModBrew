@@ -6,7 +6,7 @@ use warnings;
 use strict;
 our $VERSION = '0.01';
 
-my $DEFAULT_MODBREW_PREFIX = '~/perl5/modbrew';
+my $DEFAULT_MODBREW_PREFIX = "$ENV{HOME}/perl5/modbrew";
 
 my @_OPTS_SPEC;
 
