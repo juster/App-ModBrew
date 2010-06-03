@@ -36,7 +36,7 @@ sub new
     print_help( shift @args ) if $command eq 'help';
 
     my $cmdclass = _cmd_class( $command );
-    eval { require $cmdclass }
+    eval qq{require $cmdclass; 1;}
         or die qq{ERROR: Failed to load class for "$command" command\n$@};
     return $cmdclass->new( @args );
 }
