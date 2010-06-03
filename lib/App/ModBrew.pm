@@ -25,7 +25,11 @@ sub new
     print_help() unless @args;
 
     my $cmd_arg   = lc shift @args;
+
     $cmd_arg      =~ s/\Arm\z/remove/;
+    $cmd_arg      =~ s/\Aln\z/link/;
+    $cmd_arg      =~ s/\Als\z/list/;
+    
     my ($command) = grep { $_ eq $cmd_arg }
         qw/ install add remove list check help /;
 
