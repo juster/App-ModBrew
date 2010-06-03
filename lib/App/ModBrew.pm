@@ -89,8 +89,7 @@ sub _load_source_list
 {
     my ($self) = @_;
 
-    my $listpath = File::Spec->catfile( $self->{'prefix'},
-                                        qw/ etc sources / );
+    my $listpath = $self->_modbrew_path( 'etc/sources' );
     return qw// unless -f $listpath;
     open my $listfile, '<', $listpath or die "open $listpath failed: $!";
 
@@ -105,13 +104,23 @@ sub _save_source_list
 {
     my ($self, @sources) = @_;
 
-    my $listpath = File::Spec->catfile( $self->{'prefix'},
-                                        qw/ etc sources / );
+    my $listpath = $self->_modbrew_path( 'etc/sources' );
     open my $listfile, '>', $listpath or die "open $listpath failed: $!";
     print $listfile "$_\n" for @sources;
     close $listfile;
 
     return;
+}
+
+#---HELPER METHOD---
+sub _modbrew_path
+{
+    my ($self, $relpath) = @_;
+
+    my $path = $self->{'prefix'} . q{/} . $relpath;
+    $path =~ s{/{2,}}{/}g; # remove extra slashes
+
+    return $path;
 }
 
 1;
