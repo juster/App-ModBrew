@@ -6,4 +6,6 @@ all_from 'lib/App/ModBrew.pm';
 requires 'Pod::Usage' => 0;
 requires 'Pod::Find'  => 0;
 
+license  'perl';
+
 WriteAll;
