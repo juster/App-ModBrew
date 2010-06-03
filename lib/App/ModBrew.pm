@@ -136,12 +136,16 @@ modbrew - Turn on or off locally installed perl modules.
 modbrew [command] [command-args]
 
   Commands:
-    install     Installs modbrew (default: ~/perl5/modbrew).
-    update      Try to update ourselves (requires git).
-    add         Add a directory to link into your modbrew dir.
+    install     Installs modbrew  (default: ~/perl5/modbrew).
+    update      Update the binary (requires git).
+    
+    ln/add      Add a directory to link into your modbrew dir.
     rm/remove   Removes a directory's links from your modbrew dir.
-    list        List which directories are linked into ~/perl5/modbrew.
+    ls/list     List which directories are linked into ~/perl5/modbrew.
+    
+    toggle      Enables or disables local modules.
     check       Checks our links.
+    
     help [cmd]  Display this help or help on a specific command.
 
 =head1 DESCRIPTION
